@@ -1,6 +1,8 @@
 // require necessary modules
 const express = require('express');
 const path = require('path');
+const fs = require('fs/promises');
+const db = require('./db/db.json');
 
 // set port for server
 const PORT = process.env.port || 3001;
@@ -12,6 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// serve static files in public dir
+app.use(express.static('public'));
+
 // GET route for notes.html
 app.get('/notes', (req, res) => {
 	res.sendFile(path.join(__dirname, '/public/notes.html'));
@@ -20,6 +25,16 @@ app.get('/notes', (req, res) => {
 // GET route for index.html
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, '/public/index.html'));
+});
+
+// GET route for /api/notes
+app.get('/api/notes', (req, res) => {
+	fs.readFile(db, 'utf-8', (err) => {
+		console.error(err);
+	})
+		.then((data) => {
+			res.json(data);
+		})
 });
 
 // start listening
