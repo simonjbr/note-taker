@@ -37,6 +37,23 @@ app.get('/api/notes', async (req, res) => {
 	res.json(data);
 });
 
+// POST route for /api/notes
+app.post('/api/notes', async (req, res) => {
+	const newNote = req.body;
+	const rawNotes = await fs.readFile('./db/db.json', 'utf-8', (err) => {
+		console.error(err);
+	});
+	const notes = JSON.parse(rawNotes);
+	notes.push(newNote);
+
+	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
+		console.error(err);
+	});
+
+	res.json(notes);
+
+});
+
 // start listening
 app.listen(PORT, () => {
 	console.log(`App listening at http://localhost:${PORT}`);
