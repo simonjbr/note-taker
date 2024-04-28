@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs/promises');
 const db = require('./db/db.json');
+const { v4: uuidv4 } = require('uuid');
 
 // set port for server
 const PORT = process.env.port || 3001;
@@ -39,7 +40,11 @@ app.get('/api/notes', async (req, res) => {
 
 // POST route for /api/notes
 app.post('/api/notes', async (req, res) => {
-	const newNote = req.body;
+	const newNote = {
+		id: uuidv4(),
+		title: req.body.title,
+		text: req.body.text,
+	};
 	const rawNotes = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	});
@@ -53,6 +58,9 @@ app.post('/api/notes', async (req, res) => {
 	res.json(notes);
 
 });
+
+// DELETE route for /api/notes
+// app.delete('/api/notes/:id', )
 
 // start listening
 app.listen(PORT, () => {
