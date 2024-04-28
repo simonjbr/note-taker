@@ -118,6 +118,7 @@ const handleNewNoteView = (e) => {
 // Renders the appropriate buttons based on the state of the form
 const handleRenderBtns = () => {
 	show(clearBtn);
+	// .trim() is used to make strings made up of just spaces falsey
 	if (!noteTitle.value.trim() && !noteText.value.trim()) {
 		hide(clearBtn);
 	} else if (!noteTitle.value.trim() || !noteText.value.trim()) {
