@@ -2,7 +2,6 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs/promises');
-const db = require('./db/db.json');
 const { v4: uuidv4 } = require('uuid');
 
 // set port for server
@@ -25,6 +24,8 @@ app.get('/notes', (req, res) => {
 
 // GET route for /api/notes
 app.get('/api/notes', async (req, res) => {
+
+	// read existing notes in db.json
 	const json = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	})
@@ -35,17 +36,24 @@ app.get('/api/notes', async (req, res) => {
 
 // POST route for /api/notes
 app.post('/api/notes', async (req, res) => {
+
+	// create new note, assign unique id and inject data from request
 	const newNote = {
 		id: uuidv4(),
 		title: req.body.title,
 		text: req.body.text,
 	};
+
+	// read existing notes in db.json
 	const rawNotes = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	});
 	const notes = JSON.parse(rawNotes);
+
+	// add new note to notes array
 	notes.push(newNote);
 
+	// overwrite db.json with altered notes array
 	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
 		console.error(err);
 	});
@@ -57,12 +65,14 @@ app.post('/api/notes', async (req, res) => {
 app.delete('/api/notes/:id', async (req, res) => {
 	const id = req.params.id;
 
+	// read existing notes in db.json
 	const rawNotes = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	});
 
 	const notes = JSON.parse(rawNotes);
 
+	// find the index of note object with the same id and splice it out of the array
 	for (let i = 0; i < notes.length; i++) {
 		const note = notes[i];
 		if (note.id === id) {
@@ -70,6 +80,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 		}
 	}
 
+	// overwrite db.json with altered notes array
 	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
 		console.error(err);
 	});
