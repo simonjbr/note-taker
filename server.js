@@ -54,9 +54,6 @@ app.post('/api/notes', async (req, res) => {
 	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
 		console.error(err);
 	});
-
-	res.json(notes);
-
 });
 
 // DELETE route for /api/notes
