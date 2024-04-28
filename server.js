@@ -33,7 +33,7 @@ app.get('/api/notes', async (req, res) => {
 	const json = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	})
-	
+
 	const data = JSON.parse(json);
 	res.json(data);
 });
@@ -54,10 +54,33 @@ app.post('/api/notes', async (req, res) => {
 	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
 		console.error(err);
 	});
+
+	res.send(notes);
 });
 
 // DELETE route for /api/notes
-// app.delete('/api/notes/:id', )
+app.delete('/api/notes/:id', async (req, res) => {
+	const id = req.params.id;
+
+	const rawNotes = await fs.readFile('./db/db.json', 'utf-8', (err) => {
+		console.error(err);
+	});
+
+	const notes = JSON.parse(rawNotes);
+
+	for (let i = 0; i < notes.length; i++) {
+		const note = notes[i];
+		if (note.id === id) {
+			notes.splice(i, 1);
+		}
+	}
+
+	await fs.writeFile('./db/db.json', JSON.stringify(notes, null, 4), (err) => {
+		console.error(err);
+	});
+
+	res.send(notes);
+});
 
 // start listening
 app.listen(PORT, () => {
