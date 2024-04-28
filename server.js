@@ -23,11 +23,6 @@ app.get('/notes', (req, res) => {
 	res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
-// GET route for index.html
-app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, '/public/index.html'));
-});
-
 // GET route for /api/notes
 app.get('/api/notes', async (req, res) => {
 	const json = await fs.readFile('./db/db.json', 'utf-8', (err) => {
@@ -80,6 +75,11 @@ app.delete('/api/notes/:id', async (req, res) => {
 	});
 
 	res.send(notes);
+});
+
+// GET route for index.html
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 // start listening
