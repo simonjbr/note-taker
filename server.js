@@ -28,14 +28,13 @@ app.get('/', (req, res) => {
 });
 
 // GET route for /api/notes
-app.get('/api/notes', (req, res) => {
-	fs.readFile('./db/db.json', 'utf-8', (err) => {
+app.get('/api/notes', async (req, res) => {
+	const json = await fs.readFile('./db/db.json', 'utf-8', (err) => {
 		console.error(err);
 	})
-		.then((json) => {
-			const data = JSON.parse(json);
-			res.json(data);
-		})
+	
+	const data = JSON.parse(json);
+	res.json(data);
 });
 
 // start listening
