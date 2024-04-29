@@ -25,7 +25,8 @@ The user must then navigate to [http://localhost:3001/](http://localhost:3001/).
 Now on the notes page, the user can view saved notes by clicking on the desired title in the left pane OR delete unwanted notes by clicking the red delete button.
 To add new notes the user can click the`New Note` button if the form fields are not available. Then they must enter both a note title and note text and click `Save Note`.
 
-
+> Deployed application:
+[https://note-taker-zet7.onrender.com](https://note-taker-zet7.onrender.com)
 
 Screenshot of deployed application:
 ![Deployed screenshot](./public/assets/images/deployed-screenshot.png)
