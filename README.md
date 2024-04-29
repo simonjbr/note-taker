@@ -43,6 +43,8 @@ Screenshot of deployed application:
 
 [nodemon](https://nodemon.io/)
 
+Deployed using [Render](https://render.com/)
+
 ## License
 
 Please refer to [MIT license](./LICENSE) information in the repository.
